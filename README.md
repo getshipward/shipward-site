@@ -1,8 +1,32 @@
-# shipward.dev
+<p align="center">
+  <a href="https://shipward.dev"><img src="static/favicon.svg" alt="Shipward" width="88" height="88"></a>
+</p>
 
-The website of [Shipward](https://github.com/getshipward/shipward): what it is, and its documentation. A static Hugo
-site with its own theme (no third-party theme), served by a small Go server in `server/` (headers and redirects from
-`static/_headers` and `static/_redirects`, a 404 page, no request logs, no cookies).
+<h1 align="center">shipward.dev</h1>
+
+<p align="center">
+  <strong>The website and documentation of <a href="https://github.com/getshipward/shipward">Shipward</a>.</strong>
+</p>
+
+<p align="center">
+  <a href="https://shipward.dev">Website</a> ·
+  <a href="https://shipward.dev/docs/">Docs</a> ·
+  <a href="https://github.com/getshipward/shipward">Shipward</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/getshipward/shipward-site/actions/workflows/ci.yml"><img src="https://github.com/getshipward/shipward-site/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
+</p>
+
+This repository is the source of [shipward.dev](https://shipward.dev): the product page and the docs of Shipward, a
+command-line tool and GitHub Action that help small software makers prepare for the EU Cyber Resilience Act.
+
+It is a static [Hugo](https://gohugo.io) site with its own theme (no third-party theme, no JavaScript framework),
+served by a small Go server in `server/`: headers and redirects from `static/_headers` and `static/_redirects`, a 404
+page, no request logs, no cookies.
+
+Found a mistake in the docs? Open an issue or a pull request. Changes to Shipward itself go to
+[getshipward/shipward](https://github.com/getshipward/shipward).
 
 ## Writing rules
 
