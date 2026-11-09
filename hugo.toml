@@ -1,0 +1,38 @@
+# shipward.dev: what Shipward is, and its documentation. Theme: layouts/ and assets/ in this repo (no third-party
+# theme). Build with scripts/build.sh, which pins the Hugo version (.hugo-version) and sets the base URL.
+#
+# Wording rules (checked by scripts/check-content.sh wording): Shipward "helps you
+# prepare"; never "compliant" or "certified"; no "archive" wording; never "malware".
+
+baseURL = "https://shipward.dev/"
+locale = "en"
+title = "Shipward"
+disableKinds = ["taxonomy", "term", "rss"]
+enableRobotsTXT = true
+
+[markup]
+  [markup.goldmark.renderer]
+    # Pages are plain Markdown; no raw HTML in content.
+    unsafe = false
+  [markup.highlight]
+    # No colouring: plain code blocks (assets/css/site.css). Inline styles would break the CSP.
+    codeFences = false
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 2
+
+[params]
+  description = "Shipward helps small software makers prepare for the EU Cyber Resilience Act: SBOMs, a local vulnerability scan and VEX decisions, in your own repository."
+  contact = "daniel@sori-resitve.si"
+  [params.company]
+    legalName = "Šori rešitve, Daniel Arthur Hawton, s.p."
+    address = "Slovenska cesta 56"
+    postalCode = "1000"
+    city = "Ljubljana"
+    country = "Slovenia"
+    taxNumber = "28722795"
+    registrationNumber = "7543727000"
+    site = "https://sori-resitve.si"
+
+[sitemap]
+  changeFreq = "weekly"

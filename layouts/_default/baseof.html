@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  {{- /* Tiny and blocking on purpose: the saved theme before the first paint. No inline scripts (CSP). */}}
+  {{- $theme := resources.Get "js/theme.js" | minify | fingerprint }}
+  <script src="{{ $theme.RelPermalink }}" integrity="{{ $theme.Data.Integrity }}"></script>
+  {{- $title := cond .IsHome "Shipward · Prepare your software for the Cyber Resilience Act" (printf "%s · Shipward" (cond (eq .Kind "404") "Page not found" .Title)) }}
+  <title>{{ $title }}</title>
+  {{- $description := .Params.description | default site.Params.description }}
+  <meta name="description" content="{{ $description }}">
+  {{- if eq .Kind "404" }}
+  <meta name="robots" content="noindex">
+  {{- else }}
+  <link rel="canonical" href="{{ .Permalink }}">
+  {{- end }}
+  <meta property="og:site_name" content="Shipward">
+  <meta property="og:title" content="{{ cond .IsHome "Shipward" .Title }}">
+  <meta property="og:description" content="{{ $description }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
+  {{- $css := resources.Get "css/site.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+  {{- $js := resources.Get "js/site.js" | minify | fingerprint }}
+  <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+</head>
+<body class="{{ if .IsHome }}home{{ else if eq .Section "docs" }}docs{{ else }}plain{{ end }}">
+  <a class="skip" href="#main">Skip to content</a>
+  {{ partial "header.html" . }}
+  {{ block "main" . }}{{ end }}
+  {{ partial "footer.html" . }}
+</body>
+</html>

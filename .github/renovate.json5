@@ -1,0 +1,65 @@
+// Renovate: dependency updates at any time.
+// https://docs.renovatebot.com/configuration-options/
+//
+// This repo's dependencies: Hugo (.hugo-version), htmltest (scripts/link-check.sh), the
+// GitHub Actions in .github/workflows, the Go version of the server (server/go.mod; standard library only, no modules)
+// and the images in the Dockerfile (pinned by digest). No npm, no Composer.
+//
+// Renovate turns on GitHub auto-merge for every update that is not a major one, so GitHub merges it once the required
+// check "test" has passed (it builds the site with the new version, checks every link and tests the server; the image
+// job builds the image). Waits for a person: major updates.
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: ['config:recommended', 'helpers:pinGitHubActionDigests'],
+  timezone: 'Europe/Ljubljana',
+  // A release must be 3 days old: most broken or hijacked releases are pulled within that time.
+  minimumReleaseAge: '3 days',
+  internalChecksFilter: 'strict',
+  postUpdateOptions: ['gomodTidy'],
+  // Every update gets auto-merge. Majors lose it below.
+  labels: ['dependencies'],
+  automerge: true,
+  automergeType: 'pr',
+  platformAutomerge: true,
+  osvVulnerabilityAlerts: true,
+  vulnerabilityAlerts: {
+    addLabels: ['security'],
+    schedule: ['at any time'],
+    minimumReleaseAge: null,
+  },
+  customManagers: [
+    {
+      customType: 'regex',
+      description: 'Hugo: .hugo-version holds only the version',
+      managerFilePatterns: ['/^\\.hugo-version$/'],
+      matchStrings: ['^(?<currentValue>\\d+\\.\\d+\\.\\d+)\\s*$'],
+      datasourceTemplate: 'github-releases',
+      depNameTemplate: 'gohugoio/hugo',
+      extractVersionTemplate: '^v(?<version>.+)$',
+    },
+    {
+      customType: 'regex',
+      description: 'htmltest in scripts/link-check.sh (a "# renovate:" line above the version)',
+      managerFilePatterns: ['/^scripts/link-check\\.sh$/'],
+      matchStrings: ['# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n[A-Z_]+=(?<currentValue>\\S+)'],
+      extractVersionTemplate: '^v(?<version>.+)$',
+    },
+  ],
+  packageRules: [
+    {
+      description: 'The go directive in server/go.mod and the golang builder image in the Dockerfile move together',
+      matchDepNames: ['go', 'golang'],
+      groupName: 'Go toolchain',
+    },
+    {
+      matchManagers: ['github-actions'],
+      groupName: 'GitHub Actions',
+    },
+    {
+      description: 'A major update waits for a person',
+      matchUpdateTypes: ['major'],
+      labels: ['dependencies'],
+      automerge: false,
+    },
+  ],
+}

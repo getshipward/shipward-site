@@ -1,0 +1,122 @@
+name: ci
+
+# The site checks, the Go server's tests and the image (Dockerfile: the site built with scripts/build.sh, served by
+# server/). Pull requests only build the image; main also pushes it to ghcr.io/<owner>/shipward-site with the tags
+# sha-<commit> and main-<run number> (the newest main-N is the one that runs). The job "test" is the required check
+# for main: renaming it means changing the ruleset too. Actions are pinned to commit SHAs on purpose.
+on:
+  push:
+    branches: [main]
+  # Every pull request, with no paths filter: a merge waits for "test", and a check that never reports would hold the
+  # merge forever.
+  pull_request:
+  schedule:
+    - cron: "17 6 * * 1" # Mondays 06:17 UTC: new Go vulnerabilities and broken links in pages that have not changed
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: server/go.mod
+          cache: false # standard library only: no go.sum, nothing to cache
+
+      # The workflows, with shellcheck on every run: block. Our maintained fork of rhysd/actionlint, pinned by digest
+      # (Renovate updates it).
+      - name: actionlint
+        uses: docker://ghcr.io/dhawton/actionlint:1.8.1@sha256:bde90bd5e8e3820912a7e17b18863602b943e9dc7bfe37e4e3d87050d832a923
+        with:
+          args: -color
+
+      # The Hugo version from .hugo-version (the script downloads it).
+      - name: Build
+        run: scripts/build.sh
+      - name: Links
+        run: scripts/link-check.sh
+      - name: No phone numbers
+        run: scripts/check-content.sh phone
+      - name: Wording
+        run: scripts/check-content.sh wording
+
+      # The tests also load the real build (TestBuiltSite) when public/ is there.
+      - name: go vet
+        working-directory: server
+        run: go vet ./...
+      - name: gofmt
+        working-directory: server
+        run: test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }
+      - name: go test
+        working-directory: server
+        run: go test -race -count=1 ./...
+      - name: govulncheck
+        working-directory: server
+        run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+
+  # On a pull request the image is only built, so that a broken base image or Dockerfile fails before the merge:
+  # Renovate's updates merge by themselves.
+  image:
+    needs: [test]
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: write # push to ghcr.io/<owner>/shipward-site with the job's own token
+    env:
+      IMAGE: ghcr.io/${{ github.repository_owner }}/shipward-site
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+        with:
+          # The runner is thrown away after the job; removing the builder first only costs time.
+          cleanup: false
+
+      - uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
+        if: github.event_name == 'push'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: build
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          platforms: linux/amd64
+          push: ${{ github.event_name == 'push' }}
+          provenance: false
+          # main-N counts up (N is this workflow's run number), so the newest is easy to pick.
+          tags: |
+            ${{ env.IMAGE }}:sha-${{ github.sha }}
+            ${{ env.IMAGE }}:main-${{ github.run_number }}
+          # Layer cache in the Actions cache. Pull requests only read it.
+          cache-from: type=gha
+          cache-to: ${{ github.event_name == 'push' && 'type=gha,mode=max' || '' }}
+
+      - name: Summary
+        if: github.event_name == 'push'
+        run: |
+          {
+            echo "### Site image built"
+            echo ""
+            echo "Tags: \`sha-${{ github.sha }}\`, \`main-${{ github.run_number }}\`"
+            echo ""
+            echo "Digest: \`${{ steps.build.outputs.digest }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

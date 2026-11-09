@@ -1,0 +1,43 @@
+{{- /* How it works. Colours come from CSS classes (assets/css/site.css), so the diagram follows light and dark. */ -}}
+<figure class="diagram">
+  <svg viewBox="0 0 880 300" role="img" aria-labelledby="diagram-title diagram-desc">
+    <title id="diagram-title">How Shipward works</title>
+    <desc id="diagram-desc">Your repository goes into shipward, which runs on your machine or in your CI. shipward downloads a signed snapshot of public vulnerability data. The results go back into your repository. Nothing is uploaded.</desc>
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" class="d-arrowhead"/>
+      </marker>
+      <linearGradient id="d-grad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#4f46e5"/>
+        <stop offset="1" stop-color="#06b6d4"/>
+      </linearGradient>
+    </defs>
+
+    <rect x="340" y="12" width="200" height="62" rx="12" class="d-box d-public"/>
+    <text x="440" y="38" class="d-title" text-anchor="middle">Daily snapshot</text>
+    <text x="440" y="58" class="d-sub" text-anchor="middle">public data, signed</text>
+    <path d="M440 76 L440 128" class="d-line d-dashed" marker-end="url(#arrow)"/>
+    <text x="452" y="108" class="d-note">download only</text>
+
+    <rect x="20" y="140" width="230" height="140" rx="14" class="d-box"/>
+    <text x="40" y="170" class="d-title">Your repository</text>
+    <text x="40" y="200" class="d-mono">shipward.yaml</text>
+    <text x="40" y="224" class="d-mono">lock files</text>
+    <text x="40" y="248" class="d-mono">vex.yaml</text>
+
+    <path d="M252 210 L328 210" class="d-line" marker-end="url(#arrow)"/>
+
+    <rect x="335" y="140" width="210" height="140" rx="14" fill="url(#d-grad)"/>
+    <text x="440" y="196" class="d-title d-on-grad" text-anchor="middle">shipward</text>
+    <text x="440" y="222" class="d-sub d-on-grad" text-anchor="middle">on your machine</text>
+    <text x="440" y="242" class="d-sub d-on-grad" text-anchor="middle">or in your CI</text>
+
+    <path d="M547 210 L623 210" class="d-line" marker-end="url(#arrow)"/>
+
+    <rect x="630" y="140" width="230" height="140" rx="14" class="d-box"/>
+    <text x="650" y="170" class="d-title">Results, in your repo</text>
+    <text x="650" y="200" class="d-mono">sbom.cdx.json</text>
+    <text x="650" y="224" class="d-mono">vex.openvex.json</text>
+    <text x="650" y="248" class="d-mono">job summary</text>
+  </svg>
+</figure>

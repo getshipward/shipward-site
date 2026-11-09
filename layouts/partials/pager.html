@@ -1,0 +1,7 @@
+{{- /* Hugo's Prev and Next on a page collection run the other way round from reading order (Next is the earlier
+       page), so they are swapped here. */ -}}
+{{- $pages := (site.GetPage "/docs").Pages.ByWeight }}
+<nav class="pager" aria-label="Previous and next page">
+  {{- with $pages.Next . }}<a class="prev" href="{{ .RelPermalink }}"><span>Previous</span>{{ .LinkTitle }}</a>{{ else }}<span></span>{{ end }}
+  {{- with $pages.Prev . }}<a class="next" href="{{ .RelPermalink }}"><span>Next</span>{{ .LinkTitle }}</a>{{ end }}
+</nav>

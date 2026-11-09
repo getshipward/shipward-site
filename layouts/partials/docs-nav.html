@@ -1,0 +1,7 @@
+{{- $docs := site.GetPage "/docs" }}
+<nav class="docs-nav" aria-label="Docs">
+  <a href="{{ $docs.RelPermalink }}"{{ if eq $docs.RelPermalink $.RelPermalink }} aria-current="page"{{ end }}>Overview</a>
+  {{- range $docs.Pages.ByWeight }}
+  <a href="{{ .RelPermalink }}"{{ if eq .RelPermalink $.RelPermalink }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a>
+  {{- end }}
+</nav>

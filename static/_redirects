@@ -1,0 +1,2 @@
+# Redirects, in Cloudflare Pages' _redirects format, applied by the site server (server/rules.go): "from to [status]".
+# None yet. When a page moves, add a 301 for its old URL, with and without the trailing slash.

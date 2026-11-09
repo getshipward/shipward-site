@@ -1,0 +1,16 @@
+# Internal link check of the built site (scripts/link-check.sh). Links to other sites are not followed: a slow or
+# down site elsewhere must not block a merge here.
+DirectoryPath: public
+CheckExternal: false
+CheckInternal: true
+CheckInternalHash: true
+CheckMeta: true
+# The redirect pages (aliases, /errors/) have no favicon on purpose.
+CheckFavicon: false
+# The logo next to "Shipward" is decorative: alt="" is right there.
+IgnoreAltEmpty: true
+EnforceHTTPS: true
+IgnoreDirectoryMissingTrailingSlash: false
+OutputDir: .cache/htmltest
+OutputCacheFile: refcache.json
+OutputLogFile: htmltest.log

@@ -1,0 +1,19 @@
+{{ define "main" }}
+{{- if eq .Section "docs" }}
+<div class="docs-layout">
+  {{ partial "docs-nav.html" . }}
+  <main id="main" class="prose docs-main">
+    <p class="eyebrow">Docs</p>
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.lead }}<p class="lead">{{ . }}</p>{{ end }}
+    {{ .Content }}
+    {{ partial "pager.html" . }}
+  </main>
+</div>
+{{- else }}
+<main id="main" class="prose plain-main">
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+</main>
+{{- end }}
+{{ end }}

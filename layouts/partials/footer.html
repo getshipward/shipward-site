@@ -1,0 +1,20 @@
+{{- $c := site.Params.company }}
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <a class="brand brand-small" href="{{ "/" | relURL }}">{{ partial "logo.html" . }}<span>Shipward</span></a>
+      <p>Shipward helps software makers prepare for the EU Cyber Resilience Act. It lists facts about your software; it does not certify anything and is not legal advice.</p>
+    </div>
+    <div>
+      <p><strong>{{ $c.legalName }}</strong><br>{{ $c.address }}, {{ $c.postalCode }} {{ $c.city }}, {{ $c.country }}<br>
+      Tax number {{ $c.taxNumber }} · Registration number {{ $c.registrationNumber }}<br>
+      <a href="mailto:{{ site.Params.contact }}">{{ site.Params.contact }}</a></p>
+    </div>
+    <nav aria-label="About this site">
+      <a href="{{ "/docs/" | relURL }}">Docs</a>
+      <a href="{{ "/docs/data/" | relURL }}">Data sources</a>
+      <a href="{{ "/legal/" | relURL }}">Legal notice</a>
+      <a href="{{ "/privacy/" | relURL }}">Privacy</a>
+    </nav>
+  </div>
+</footer>

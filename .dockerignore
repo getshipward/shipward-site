@@ -1,0 +1,9 @@
+# The build context: what scripts/build.sh and the server need. Not the local build, caches or git data.
+.git
+.github
+.claude
+.cache
+public
+resources
+.hugo_build.lock
+scripts/__pycache__

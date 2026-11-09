@@ -1,0 +1,5 @@
+/public/
+/.cache/
+/resources/
+.hugo_build.lock
+/server/server

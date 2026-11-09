@@ -1,0 +1,56 @@
+---
+title: GitHub Action
+weight: 70
+lead: All of the above on every push, with the results in the job summary.
+---
+
+```yaml
+jobs:
+  shipward:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@<commit>
+      - run: dotnet restore --locked-mode       # .NET only: hashes and creators come from restored packages
+      - uses: getshipward/shipward@<commit>     # pin a commit
+        with:
+          fail-on: none                         # or open, exploited
+```
+
+The Action builds `shipward` from Shipward's source at the commit you pin, then runs `shipward sbom`, `shipward check sbom`,
+`shipward scan` and `shipward triage export`. The results:
+
+- the job summary: the SBOM fields table and the vulnerability table with your decisions;
+- the outputs `open` (advisories without a final decision) and `exploited` (of those, the ones known to be
+  exploited);
+- a workflow artifact with the `sbom/` folder: the SBOM and the VEX document.
+
+## More than one delivered file
+
+`--artifact` takes one file, so make one SBOM per download. The output `shipward` is the path of the binary the Action
+built; later steps can run it:
+
+```yaml
+      - id: shipward
+        uses: getshipward/shipward@<commit>
+        with: { check: "false", scan: "false", export-vex: "false", upload: "false" }
+      - env: { SHIPWARD: "${{ steps.shipward.outputs.shipward }}" }
+        run: |
+          "$SHIPWARD" sbom --version 1.4.0 --artifact dist/game-setup.exe --form executable,bundle -o sbom/setup.cdx.json
+          "$SHIPWARD" sbom --version 1.4.0 --artifact dist/game.zip --form bundle -o sbom/zip.cdx.json
+```
+
+## Inputs
+
+| Input | Default | What |
+|---|---|---|
+| `working-directory` | `.` | Folder with `shipward.yaml` |
+| `config` | `shipward.yaml` | Settings file |
+| `version` | tag name, else the commit | Product version in the SBOM |
+| `check` | `true` | List missing SBOM fields (never fails the job) |
+| `scan` | `true` | Scan for known vulnerabilities |
+| `fail-on` | `none` | `open` or `exploited` to fail the job |
+| `export-vex` | `true` | Write the OpenVEX document when there are decisions |
+| `artifact`, `artifact-url` | | The delivered file and its download URL |
+| `upload`, `upload-name`, `upload-path` | `true`, `shipward`, `sbom` | The workflow artifact |
+
+The Action sets up Go to build `shipward`, which changes the job's Go version.

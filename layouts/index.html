@@ -1,0 +1,138 @@
+{{ define "main" }}
+<main id="main">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="badge"><span class="dot" aria-hidden="true"></span>In use for our own products. Not available yet.</p>
+        <h1>Get your software ready for the <span class="grad">Cyber Resilience Act</span>, in your own repository.</h1>
+        <p class="hero-lead">Shipward is a command-line tool and a GitHub Action for small software makers. It lists every component of your product, finds known vulnerabilities in them, and keeps your decisions about each one. Everything it makes stays in your repository.</p>
+        <p class="hero-actions">
+          <a class="button" href="{{ "/docs/" | relURL }}">Read the docs</a>
+          <a class="button ghost" href="#how">How it works</a>
+        </p>
+      </div>
+      <figure class="terminal" aria-label="Example: shipward scan output">
+        <div class="terminal-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+<pre><code><span class="t-prompt">$</span> shipward sbom --version 1.4.0
+wrote sbom/sbom.cdx.json (82 components)
+
+<span class="t-prompt">$</span> shipward scan
+82 components checked against the snapshot of 2026-11-06
+
+<span class="t-pkg">Newtonsoft.Json@12.0.1</span>  GHSA-5crp-9r3c-p9vr
+    rating high; fixed in 13.0.1; EPSS 32.9%
+    decision: <span class="t-ok">not affected</span>: vulnerable code not
+    in execute path (2026-11-06)
+
+Advisories: 1. Need a decision or work: <span class="t-ok">0</span>.
+
+<span class="t-prompt">$</span> shipward triage export
+wrote sbom/vex.openvex.json (1 statement)</code></pre>
+      </figure>
+    </div>
+  </section>
+
+  <section class="band dates" aria-labelledby="dates-title">
+    <div class="wrap">
+      <h2 id="dates-title" class="section-title">The CRA in two dates</h2>
+      <p class="section-lead">The Cyber Resilience Act (Regulation (EU) 2024/2847) covers software that people download and run, when a business supplies it in the EU.</p>
+      <ol class="timeline">
+        <li>
+          <p class="when">11 September 2026</p>
+          <h3>Report what is exploited</h3>
+          <p>Makers report actively exploited vulnerabilities and severe incidents to ENISA's single reporting platform: an early warning within 24 hours, a notification within 72 hours, then a final report.</p>
+        </li>
+        <li>
+          <p class="when">11 December 2027</p>
+          <h3>Everything else</h3>
+          <p>A software bill of materials, vulnerability handling, free security updates for the support period, technical documentation, an EU declaration of conformity and the CE marking.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="what" class="wrap features" aria-labelledby="what-title">
+    <h2 id="what-title" class="section-title">What it does</h2>
+    <p class="section-lead">One tool for the technical side of the work, run where your code already is: on your machine and in your CI.</p>
+    <ul class="feature-grid">
+      <li>
+        <p class="cmd">shipward sbom</p>
+        <h3>Software bill of materials</h3>
+        <p>A CycloneDX 1.6 SBOM from your lock files (npm, NuGet, Composer, Go, Python, Maven, Rust, Ruby and more), plus the parts no package manager knows, such as a game engine.</p>
+      </li>
+      <li>
+        <p class="cmd">shipward check sbom</p>
+        <h3>Missing SBOM fields</h3>
+        <p>Checks the SBOM against Germany's BSI TR-03183-2 and names each component that misses a required field. Hashes, creators and file details are filled in from local files where they exist.</p>
+      </li>
+      <li>
+        <p class="cmd">shipward scan</p>
+        <h3>Known vulnerabilities</h3>
+        <p>Matches every component version against a daily, signed snapshot of public advisories, on your machine. Shows which ones are known to be exploited (CISA KEV, ENISA EUVD) and their EPSS score.</p>
+      </li>
+      <li>
+        <p class="cmd">shipward triage</p>
+        <h3>Your decisions, as VEX</h3>
+        <p>An advisory that names a version does not mean your product is affected. Record why, in a file in your repository, and export it as OpenVEX for your users and their scanners.</p>
+      </li>
+      <li>
+        <p class="cmd">shipward licences</p>
+        <h3>Licences a person checked</h3>
+        <p>Declared licences come from package metadata. The licences you confirm are kept in your repository and written into the SBOM.</p>
+      </li>
+      <li>
+        <p class="cmd">uses: getshipward/shipward</p>
+        <h3>In every build</h3>
+        <p>A GitHub Action runs all of the above on every push and puts the results in the job summary. You choose whether findings fail a build; by default they never do.</p>
+      </li>
+    </ul>
+    <p class="next"><strong>Also:</strong> drafts of your security policy, security.txt, user information, declaration of conformity and technical documentation (<code>shipward init</code>). And when something is exploited: drafts of the 24-hour, 72-hour and final reports, with their deadlines (<code>shipward report</code>).</p>
+  </section>
+
+  <section id="how" class="band how" aria-labelledby="how-title">
+    <div class="wrap">
+      <h2 id="how-title" class="section-title">How it works</h2>
+      <p class="section-lead">Your code and your results never leave your hands. The only thing that comes from us is public data, signed.</p>
+      {{ partial "diagram.html" . }}
+      <ol class="steps">
+        <li><strong>Your repository</strong> holds a short <code>shipward.yaml</code>, your lock files, and the decisions you made (<code>vex.yaml</code>).</li>
+        <li><strong>shipward runs where you are</strong>: your laptop or your CI. It downloads the snapshot files it needs and checks their signature.</li>
+        <li><strong>The results are files in your repository</strong>: the SBOM, the VEX document and a summary. Nothing is uploaded anywhere.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="wrap principles" aria-labelledby="principles-title">
+    <h2 id="principles-title" class="section-title">Principles</h2>
+    <ul class="principle-grid">
+      <li>
+        <h3>Your data stays yours</h3>
+        <p>No account, no upload, no package names sent to us or to anyone else. The snapshot is the same file for everyone.</p>
+      </li>
+      <li>
+        <h3>Signed public data</h3>
+        <p>A daily snapshot from sources whose terms allow it, signed with Ed25519 and checked file by file. A copy older than the one you have is refused.</p>
+      </li>
+      <li>
+        <h3>Facts, not claims</h3>
+        <p>Shipward lists what is present and what is missing. It does not certify anything; a person decides what a finding means.</p>
+      </li>
+      <li>
+        <h3>It reports, you decide</h3>
+        <p>Shipward never blocks, removes or changes your software. Whether a finding stops a release is your setting.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="band origin" aria-labelledby="origin-title">
+    <div class="wrap origin-inner">
+      <div>
+        <h2 id="origin-title" class="section-title">Built for our own products first</h2>
+        <p>Šori rešitve is a one-person software company in Ljubljana. We make an online game, Ludo, that people download, so we prepare for the CRA too. Shipward is the tool we needed and could not find: small, local, and honest about what it knows.</p>
+        <p>It runs on our own products today. We will decide later whether to offer it to others.</p>
+      </div>
+      <a class="button" href="{{ "/docs/" | relURL }}">See how it is used</a>
+    </div>
+  </section>
+</main>
+{{ end }}
