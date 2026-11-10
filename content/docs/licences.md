@@ -22,5 +22,8 @@ run `shipward sbom` again.
   concluded: MIT
 ```
 
+`concluded` must be an SPDX expression: an ID such as `MIT`, an expression such as `MIT OR Apache-2.0`, or
+`LicenseRef-...` for a licence that is not on the SPDX list.
+
 An entry without `@version` applies to every version while the declared licence stays the same. When a new version
 declares another licence, the entry no longer applies, and `shipward licences` lists the component again.
