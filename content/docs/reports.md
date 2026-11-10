@@ -125,7 +125,11 @@ Tell the affected users, and where appropriate all users, about the vulnerabilit
 - Before a fix exists, say what users should do, not how the flaw works. Details can help attackers.
 - Publish the full details once the security update is out (Annex I Part II(4)).
 
-`users.md` is a draft of the notice.
+`users.md` is a draft of the notice. Where it fits, also give it in a structured, machine-readable form
+(Article 14(8)): `shipward report drafts CASE --csaf` writes it as a
+[CSAF 2.0](https://docs.oasis-open.org/csaf/csaf/v2.0/os/csaf-v2.0-os.html) document, `users.csaf.json`, from
+`report.yaml`. It needs `versions`, `user_measures` and `manufacturer.url`. It is a draft: check it before it goes
+out.
 
 ## The drafts follow the form
 
