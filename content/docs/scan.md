@@ -38,8 +38,8 @@ Every scan shows the age of the snapshot and of the ENISA and EPSS copies, in th
 - the snapshot or a feed copy is more than 48 hours old (for example with `--offline`, which uses copies of any age);
 - the snapshot has expired: each one expires 7 days after it was made, so a server that keeps offering an old
   snapshot is noticed even on a CI runner that starts with an empty cache;
-- a feed could not be loaded, or came back empty (CISA's and ENISA's lists are never empty, so an empty one counts as
-  not loaded, and an older good copy is kept). Then the scan says so, and lists only the sources it really used.
+- a feed could not be loaded, or came back without one usable entry (CISA's and ENISA's lists are never empty, so
+  such a list counts as not loaded, and an older good copy is kept). Then the scan says so, and lists only the sources it really used.
 
 `--max-age` turns the age warning into a failure: `shipward scan --max-age 3d` exits 1 when the snapshot or a feed copy
 is older than 3 days. It takes hours (`36h`) or days (`3d`).
