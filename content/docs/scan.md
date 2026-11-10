@@ -16,6 +16,18 @@ fixed versions, whether it is known to be exploited, its EPSS score, and your de
 `affected` come first, then the ones you have not decided (open or under investigation), then the closed ones. Within
 each group, exploited ones are at the top, then the highest EPSS score.
 
+## What it can check
+
+`shipward scan` matches components by their package URL (purl), in these ecosystems: npm, NuGet, Packagist
+(Composer), Go, PyPI, Maven, crates.io (Rust) and RubyGems. Any other component is **not checked**, and no advisory
+is ever shown for it. That includes a game engine (`pkg:github/...`), C or C++ libraries, system packages, container
+images and anything without a purl. Check those yourself, for example on the project's security page.
+
+The first line of the output says how many components were not checked ("2 of 385 components not checked"), and
+`--all` names them all. The same count is in the JSON (`not_checked`, out of `components`) and the job summary. The
+number checked counts each package once, even when several lock files list it, so the two numbers need not add up.
+`--fail-on unchecked` exits 3 when any component could not be checked.
+
 ## Where the data comes from
 
 `shipward` downloads a [signed snapshot](/docs/data/) of public advisories, made once a day, and only the files for the
@@ -77,6 +89,8 @@ product. A person decides that, and records it as a [decision](/docs/decisions/)
 shipward scan --summary "$GITHUB_STEP_SUMMARY"   # a table in the job summary
 shipward scan --fail-on exploited                # exit 3 when an undecided advisory is known to be exploited
 shipward scan --fail-on open                     # exit 3 when any advisory has no final decision
+shipward scan --fail-on unchecked                # exit 3 when a component could not be checked
+shipward scan --fail-on exploited,unchecked      # several, with commas
 ```
 
 `--fail-on` is off by default. Shipward reports; you decide what stops a release. With `--fail-on exploited`, a scan that

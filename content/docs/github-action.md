@@ -13,7 +13,7 @@ jobs:
       - run: dotnet restore --locked-mode       # .NET only: hashes and creators come from restored packages
       - uses: getshipward/shipward@<commit>     # pin a commit
         with:
-          fail-on: none                         # or open, exploited
+          fail-on: none                         # or open, exploited, unchecked
 ```
 
 The Action builds `shipward` from Shipward's source at the commit you pin, then runs `shipward sbom`, `shipward check sbom`,
@@ -21,8 +21,8 @@ The Action builds `shipward` from Shipward's source at the commit you pin, then 
 (the licences you confirmed in `licences.yaml` still go into the SBOM). The results:
 
 - the job summary: the SBOM fields table and the vulnerability table with your decisions;
-- the outputs `open` (advisories without a final decision) and `exploited` (of those, the ones known to be
-  exploited);
+- the outputs `open` (advisories without a final decision), `exploited` (of those, the ones known to be
+  exploited) and `unchecked` (components that could not be checked: see [What it can check](/docs/scan/#what-it-can-check));
 - a workflow artifact with the `sbom/` folder: the SBOM and the VEX document.
 
 ## More than one delivered file
@@ -78,7 +78,7 @@ So this job is a backstop, not your only reminder: keep the deadlines in your ow
 | `version` | tag name, else the commit | Product version in the SBOM |
 | `check` | `true` | List missing SBOM fields (never fails the job) |
 | `scan` | `true` | Scan for known vulnerabilities |
-| `fail-on` | `none` | `open` or `exploited` to fail the job (`exploited` also fails when CISA's or ENISA's list could not be loaded) |
+| `fail-on` | `none` | `open`, `exploited` or `unchecked` to fail the job; several with commas (`exploited` also fails when CISA's or ENISA's list could not be loaded) |
 | `export-vex` | `true` | Write the OpenVEX document when there are decisions |
 | `artifact`, `artifact-url` | | The delivered file and its download URL |
 | `upload`, `upload-name`, `upload-path` | `true`, `shipward`, `sbom` | The workflow artifact |
