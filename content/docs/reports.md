@@ -31,6 +31,10 @@ shipward report drafts CASE --force     # write the drafts again after you chang
 
 - A time is RFC 3339 (`2026-11-06T14:00:00+01:00`) or `2026-11-06 14:00` in your local time, on the command line
   and in `report.yaml` alike. A date without a time is refused.
+- `shipward report new` writes your time zone into `report.yaml` (`zone: Europe/Ljubljana`). Times without an
+  offset are read in that zone, and months are counted in it, so your computer and a CI runner give the same
+  deadlines. Without `zone`, a time without an offset is read in the computer's zone, and a month keeps the offset of
+  the time it starts from.
 - One month ends on the same day of the next month. When that day does not exist, it ends on the last day of the
   month: a notification sent on 31 January gives 28 February (29 in a leap year). Shipward keeps the clock time of
   the notification, so its date is never later than the legal one; the legal end of the period can be later (the end
@@ -38,8 +42,9 @@ shipward report drafts CASE --force     # write the drafts again after you chang
 - Until you record the notification of an incident, the final report shows "at the latest": one month after the
   notification's 72-hour deadline. The date moves earlier when you record the notification.
 - `shipward report fixed CASE --at TIME` can be before you became aware: the flaw may be fixed in a newer release
-  already. When its 14 days end before the notification is due, Shipward asks for the final report together with the
-  notification.
+  already. The final report is still due 14 days after the fix. When that is before the notification is due,
+  Shipward asks you to send the notification and the final report together by then. When the 14 days ended before
+  you became aware, it asks for the final report with the notification.
 - `shipward report done` records the reports in order: early warning, notification, final report. If you sent two
   together, record both with the same time. Times in the future, and times before you became aware, are refused.
 
