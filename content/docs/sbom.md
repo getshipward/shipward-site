@@ -40,6 +40,11 @@ shipward sbom --version 1.4.0 --artifact dist/game-setup.exe --form executable,b
 shipward sbom --version 1.4.0 --artifact dist/game.zip --form bundle -o sbom/zip.cdx.json
 ```
 
+Make an SBOM for every release and keep it with that release, for example as a release asset. It is part of the
+technical documentation, which you keep for at least ten years after the product is placed on the market, or for the
+support period if that is longer (CRA Article 13(13), Annex VII point 8). In CI, see
+[Keep each release's SBOM and VEX](/docs/github-action/#keep-each-releases-sbom-and-vex).
+
 ## What shipward fills in
 
 Only what local files state as facts. It looks nothing up online.
