@@ -58,7 +58,8 @@ shipward report drafts CASE --force     # write the drafts again after you chang
 - `shipward report done` records the reports in order: early warning, notification, final report. If you sent two
   together, record both with the same time. Times in the future, and times before you became aware, are refused.
 - `--skipped REASON` records a notification or final report you did not send because its information was already
-  provided. Shipward counts it as done and shows the reason.
+  provided. Shipward counts it as done and shows the reason. For an incident with a skipped notification, the final
+  report's month counts from the early warning, not from when you recorded the skip.
 - The notice to users is not in that order. `shipward report` lists it first, and reminds you of it after each
   report until you record it.
 
