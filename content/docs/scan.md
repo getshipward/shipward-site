@@ -24,7 +24,8 @@ is ever shown for it. That includes a game engine (`pkg:github/...`), C or C++ l
 images and anything without a purl. Check those yourself, for example on the project's security page.
 
 The first line of the output says how many components were not checked ("2 of 385 components not checked"), and
-`--all` names them all. The same count is in the JSON (`not_checked`) and the job summary.
+`--all` names them all. The same count is in the JSON (`not_checked`, out of `components`) and the job summary. The
+number checked counts each package once, even when several lock files list it, so the two numbers need not add up.
 `--fail-on unchecked` exits 3 when any component could not be checked.
 
 ## Where the data comes from
