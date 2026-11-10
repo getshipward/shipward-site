@@ -11,8 +11,9 @@ shipward scan --offline                # no requests: the cached copy only
 ```
 
 For each advisory that names a component version, `shipward scan` shows the advisory and its other IDs, the rating, the
-fixed versions, whether it is known to be exploited, its EPSS score, and your decision. Advisories you have not
-decided come first, exploited ones at the top.
+fixed versions, whether it is known to be exploited, its EPSS score, and your decision. Advisories you marked
+`affected` come first, then the ones you have not decided (open or under investigation), then the closed ones. Within
+each group, exploited ones are at the top, then the highest EPSS score.
 
 ## Where the data comes from
 

@@ -21,6 +21,17 @@ each file has. It never overwrites a file unless you add `--force`.
 | `cra/declaration-of-conformity.md` | The EU declaration of conformity, unsigned | CRA Annex V |
 | `cra/technical-documentation.md` | The outline of the technical documentation, with a table for each essential requirement | CRA Annex VII and Annex I, part I |
 
+Some drafts hold choices only you can make, so they stay TODO until you make them:
+
+- `SECURITY.md` promises response times: when you confirm a report, when you say what happens next, and how long you
+  ask a reporter to keep it private. Set them in `shipward.yaml` (below), or write them into the file.
+- `SECURITY.md` says which versions get security updates. Fill in the table, or say that only the latest version
+  gets them. You may do that only if the users of older versions can get the latest version free of charge, and need
+  no new hardware or software to use it (Article 13(10)).
+- `security.txt` must have a `Contact` field (RFC 9116). Without `security.contact` or `manufacturer.email`, the field
+  is a TODO and `shipward init` warns. The draft's `Expires` is 11 months from the day you run `shipward init`: write
+  the file again before then.
+
 > These are drafts that help you prepare. They are not legal advice and do not show conformity. Every file starts
 > with a short note saying so; remove it once you have filled in the TODOs and checked every sentence. Sign the
 > declaration only when the technical documentation is complete.
@@ -42,8 +53,11 @@ security:
   contact: mailto:security@example.com   # default: the manufacturer's e-mail
   policy: https://example.com/security   # where SECURITY.md is published
   languages: [en]
+  acknowledge_working_days: 5            # SECURITY.md: you confirm a report within 5 working days
+  assessment_days: 30                    # you say within 30 days whether you can reproduce it
+  disclosure_days: 90                    # you ask the reporter to keep it private for up to 90 days
 docs:
-  dir: shipward                        # where the drafts go; SECURITY.md goes to the repository root
+  dir: cra                             # where the drafts go (default cra); SECURITY.md goes to the repository root
 ```
 
 All of these are optional except the two names. What is missing becomes a TODO.
