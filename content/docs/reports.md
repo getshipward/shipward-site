@@ -11,13 +11,17 @@ incident that affects the product's security, through ENISA's single reporting p
 This also applies to products placed on the market before 11 December 2027 (Article 69(3)). The other CRA duties
 reach those products only after a substantial modification made on or after that date (Article 69(2)).
 
-| Report | Due |
+| Report | At the latest |
 |---|---|
-| Early warning | 24 hours after becoming aware |
-| Notification | 72 hours after becoming aware |
+| Early warning | 24 hours after becoming aware; send it without undue delay |
+| Notification | 72 hours after becoming aware; send it without undue delay |
+| Intermediate report | Only when the CSIRT asks for one, by the time it sets (Article 14(6)) |
 | Final report, vulnerability | 14 days after a fix or mitigation is available |
 | Final report, severe incident | One month after the notification was submitted |
-| Notice to affected users | In a timely manner |
+| Notice to affected users | In a timely manner, in parallel with the reports, from when you become aware (Article 14(8)) |
+
+The 24 and 72 hours are the outer limits: the law asks for both reports "without undue delay". A notification or a
+final report is not needed when its information has already been provided (Article 14(2), (4)).
 
 `shipward report` keeps track of each case and writes drafts with the contents the article lists. You submit them on the
 platform yourself: it has no API.
@@ -26,7 +30,10 @@ platform yourself: it has no API.
 shipward report new vulnerability --title "Exploited flaw in login" --aware "2026-11-06 14:00" --advisory CVE-2026-1234
 shipward report                         # every open case: the next report, its deadline, the time left
 shipward report done CASE early-warning # after you submitted it
+shipward report done CASE users         # after you told the users
 shipward report fixed CASE              # a fix is available: the final report is due 14 days later
+shipward report intermediate CASE --due "2026-11-20 12:00"   # the CSIRT asked for an intermediate report
+shipward report done CASE notification --skipped "already provided in the early warning"
 shipward report drafts CASE --force     # write the drafts again after you changed report.yaml
 ```
 
@@ -36,8 +43,8 @@ shipward report drafts CASE --force     # write the drafts again after you chang
   and in `report.yaml` alike. A date without a time is refused.
 - When Shipward can find your time zone's name, `shipward report new` writes it into `report.yaml`
   (`zone: Europe/Ljubljana`); on Windows it cannot, so add the line yourself. Times without an offset are read in that
-  zone, and months are counted in it, so your computer and a CI runner give the same deadlines. Without `zone`, a time without an offset is read in the computer's zone, and a month keeps the offset of
-  the time it starts from.
+  zone, and months are counted in it, so your computer and a CI runner give the same deadlines. Without `zone`, a
+  time without an offset is read in the computer's zone, and a month keeps the offset of the time it starts from.
 - One month ends on the same day of the next month. When that day does not exist, it ends on the last day of the
   month: a notification sent on 31 January gives 28 February (29 in a leap year). Shipward keeps the clock time of
   the notification, so its date is never later than the legal one; the legal end of the period can be later (the end
@@ -50,15 +57,34 @@ shipward report drafts CASE --force     # write the drafts again after you chang
   you became aware, it asks for the final report with the notification.
 - `shipward report done` records the reports in order: early warning, notification, final report. If you sent two
   together, record both with the same time. Times in the future, and times before you became aware, are refused.
+- `--skipped REASON` records a notification or final report you did not send because its information was already
+  provided. Shipward counts it as done and shows the reason. For an incident with a skipped notification, the final
+  report's month counts from the early warning, not from when you recorded the skip.
+- The notice to users is not in that order. `shipward report` lists it first, and reminds you of it after each
+  report until you record it.
+
+## The notice to users
+
+Tell the affected users, and where appropriate all users, about the vulnerability or incident and what they can do
+(Article 14(8)). Tell them as soon as you can: do not wait for the final report.
+
+- Tell the affected users first, where they will see it: in the product, or by e-mail.
+- Before a fix exists, say what users should do, not how the flaw works. Details can help attackers.
+- Publish the full details once the security update is out (Annex I Part II(4)).
+
+`users.md` is a draft of the notice.
 
 ## A case
 
 Each case is a folder in `cra/reports/`: `report.yaml` with the facts and the times, and four drafts:
-`early-warning.md`, `notification.md`, `final.md` and `users.md`. Add what you learn to `report.yaml` (measures taken,
+`early-warning.md`, `notification.md`, `final.md` and `users.md`, plus `intermediate.md` when the CSIRT asks for an
+intermediate report. Add what you learn to `report.yaml` (measures taken,
 measures users can take, affected versions) and write the drafts again.
 
 > A case describes something that may not be public yet. Keep it out of public repositories. shipward writes the files so
-> that only you can read them.
+> that only you can read them. When `shipward report new` creates the `cra/reports/` folder, it writes
+> `cra/reports/.gitignore` with `*`, so git ignores the cases. When git does not ignore a case and the repository has a
+> remote, `shipward report new` warns you.
 
 ## Settings
 
@@ -73,5 +99,12 @@ reports:
 ## In CI
 
 `shipward report --fail-on overdue` exits with code 3 when a report is overdue (`--fail-on none`, the default, never
-does). Run it on a schedule, so a missed deadline
-fails a job and you hear about it.
+does). Run it on a schedule, so a missed deadline fails a job and you hear about it. The
+[GitHub Action](../github-action/) page has an example.
+
+The job needs the cases, so run it only in a private repository that keeps them. Two ways:
+
+- Keep the cases in a private repository of their own, with a small `shipward.yaml` (product, manufacturer and
+  `reports`). Delete `cra/reports/.gitignore` there, commit the cases, and run the job in that repository.
+- If the product's repository is private, delete `cra/reports/.gitignore` there and commit the cases. Do not do this
+  in a public repository.
