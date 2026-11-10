@@ -17,8 +17,8 @@ also goes on after a product's support period has ended (Commission guidance C(2
 Read this before the first case: in the first hours there is no time.
 
 - **The platform.** Reports go through ENISA's single reporting platform,
-  [portal.cra-srp.enisa.europa.eu](https://portal.cra-srp.enisa.europa.eu/). It is a web form: no API, no file
-  upload, English only. Log in as "Assigned Representative".
+  [portal.cra-srp.enisa.europa.eu](https://portal.cra-srp.enisa.europa.eu/). It is a web form, with no API, in
+  English only. Log in as "Assigned Representative".
 - **An account.** Each person who submits needs a personal EU Login account with multi-factor authentication. Make
   it now ([EU Login](https://ecas.ec.europa.eu/cas/login)). A manufacturer has one primary and up to 20 secondary
   representatives. ENISA asks you to register on the platform only when you have something to report; that takes a
@@ -26,8 +26,9 @@ Read this before the first case: in the first hours there is no time.
 - **Your CSIRT.** You report to the CSIRT coordinator of the Member State of your main establishment: where decisions
   on your products' cybersecurity are mainly taken, or else where you have the most employees in the EU
   (Article 14(7)). Without an establishment in the EU, take the first that applies: the Member State of your
-  authorised representative, of your importer, of your distributor, or with the most users of your products. A wrong
-  choice can make the platform reject the report. Write the CSIRT into `reports.csirt`.
+  authorised representative, of your importer, of your distributor, or with the most users of your products. With
+  the wrong CSIRT, the report may be invalidated, and you must send it again to the right one. Write the CSIRT into
+  `reports.csirt`.
 - **If the platform is down.** Wait until it is back and submit then. You may also contact your CSIRT directly, but
   you must still submit on the platform.
 - **Who does it.** Decide who opens a case, who submits, and who stands in for them.
