@@ -26,7 +26,7 @@ The words are OpenVEX's.
 |---|---|---|
 | `not_affected` | The product is not affected | A justification or an impact statement |
 | `affected` | The product is affected | An action statement: what users should do |
-| `fixed` | A release fixed it | |
+| `fixed` | A release fixed it | For the CRA: `fixed_in` and `advisory` once the [advisory](../advisories/) is published |
 | `under_investigation` | Not decided yet | |
 
 Justifications for `not_affected`: `component_not_present`, `vulnerable_code_not_present`,
@@ -43,6 +43,12 @@ Justifications for `not_affected`: `component_not_present`, `vulnerable_code_not
   impact: We never parse untrusted JSON.
   by: alex
   date: "2026-11-06"
+- id: CVE-2026-1234
+  component: pkg:nuget/Lib@2.0.0
+  status: fixed
+  fixed_in: 1.4.0                          # the product version with the update
+  advisory: https://example.com/security/CVE-2026-1234
+  date: "2026-11-10"
 ```
 
 Edit it by hand or with `shipward triage set`; comments are kept. `shipward triage` also lists decisions that no advisory needs
