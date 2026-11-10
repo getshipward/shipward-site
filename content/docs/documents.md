@@ -19,6 +19,7 @@ each file has. It never overwrites a file unless you add `--force`.
 | `cra/security.txt` | The file security researchers look for, to publish at `/.well-known/security.txt` on your website | RFC 9116 |
 | `cra/user-information.md` | The information users must get: manufacturer, contact for vulnerabilities, intended purpose, support period, instructions | CRA Annex II |
 | `cra/declaration-of-conformity.md` | The EU declaration of conformity, unsigned | CRA Annex V |
+| `cra/simplified-declaration-of-conformity.md` | The short form you may give with the product instead: two fixed sentences and the address of the full declaration | CRA Annex VI |
 | `cra/technical-documentation.md` | The outline of the technical documentation, with a table for each essential requirement | CRA Annex VII and Annex I, part I |
 
 Some drafts hold choices only you can make, so they stay TODO until you make them:
@@ -37,6 +38,32 @@ Some drafts hold choices only you can make, so they stay TODO until you make the
 > with a short note saying so; remove it once you have filled in the TODOs and checked every sentence. Sign the
 > declaration only when the technical documentation is complete.
 
+## Product class and the declaration
+
+The conformity assessment you may use depends on the product's class (Article 32). Set it as `product.class` once you
+have checked the product against Annex III and Annex IV: the technical documentation draft has a short checklist, and
+the technical descriptions of the categories are in Commission Implementing Regulation (EU)
+[2025/2392](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2392).
+
+| `product.class` | What point 7 of the declaration says |
+|---|---|
+| not set | TODO, and the notified body is TODO too |
+| `default` (not in Annex III or IV) | Notified body: none. Internal control (module A) |
+| `important-1` (Annex III, class I) | TODO. Internal control only if you applied harmonised standards, common specifications or a certification scheme in full; otherwise a notified body (modules B and C, or H) |
+| `important-2` (Annex III, class II) | TODO. A notified body (modules B and C, or H) or a certification scheme; never internal control alone |
+| `critical` (Annex IV) | TODO. A certification scheme where one is required, otherwise as for class II |
+
+Free and open-source software in Annex III may use internal control if its technical documentation is public
+(Article 32(5)); the draft says so for those classes.
+
+The declaration's point 3 says "manufacturer", where Annex V says "provider": the manufacturer draws up the
+declaration and takes responsibility for it (Articles 13(12) and 28). Make the declaration available in the languages
+each Member State where you sell asks for (Article 28(2)).
+
+For software, the CE marking goes on the declaration of conformity or on the product's website, and only once the
+conformity assessment shows that the requirements are met (Articles 13(12) and 30). Set `product.declaration_url` to
+the address of the full declaration: the simplified declaration and the user information link to it.
+
 ## Settings it uses
 
 ```yaml
@@ -46,6 +73,8 @@ product:
   purpose: Players play online with friends or bots.
   website: https://example.com/game
   support_until: "2031-12"        # end of the support period (at least five years, Article 13(8))
+  class: default                  # default, important-1, important-2 or critical (see above)
+  declaration_url: https://example.com/game/declaration   # where the full EU declaration of conformity is
 manufacturer:
   name: Example Ltd
   address: "Street 1, 1000 City, Country"
