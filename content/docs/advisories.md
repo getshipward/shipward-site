@@ -14,7 +14,8 @@ not only for the exploited ones you [report](../reports/). The advisory names:
 - the severity;
 - clear steps users can follow to fix it, for example the version to update to.
 
-In duly justified cases you may wait to publish until users could install the update (Part II(4)).
+Only in duly justified cases, where you consider the security risks of publishing to outweigh the security
+benefits, may you wait, and only until users could install the update (Part II(4)).
 
 ```sh
 shipward advisory new CVE-2026-1234 --affected 1.3.0 --affected 1.3.1 --fixed-in 1.4.0 --severity high
@@ -32,7 +33,7 @@ The ID can be a CVE, GHSA or EUVD ID, or your own for a flaw in your own code.
 |---|---|
 | `--title` | A short title |
 | `--affected` | An affected product version; repeat it for more |
-| `--fixed-in` | The product version with the security update |
+| `--fixed-in` | The product version with the security update (not one of the `--affected` versions) |
 | `--component` | The affected component (a package URL), when the flaw is in a dependency |
 | `--severity` | For example `high` |
 | `--description`, `--impact`, `--remediation` | The texts; the remediation defaults to "Update to version X or later" |
@@ -52,7 +53,7 @@ publish it, set the status to `final`, the version to `1` (with a revision histo
 ## Record it
 
 A `fixed` decision in `vex.yaml` is final for VEX, but the CRA work is done only when the update and the advisory
-are out. Record both in the decision:
+are out. Record both in the decision (`--advisory` is a URL):
 
 ```sh
 shipward triage set CVE-2026-1234 pkg:nuget/Lib@2.0.0 --status fixed --fixed-in 1.4.0 \
