@@ -25,6 +25,27 @@ The Action builds `shipward` from Shipward's source at the commit you pin, then 
   exploited) and `unchecked` (components that could not be checked: see [What it can check](/docs/scan/#what-it-can-check));
 - a workflow artifact with the `sbom/` folder: the SBOM and the VEX document.
 
+## Keep each release's SBOM and VEX
+
+Workflow artifacts expire (on GitHub after 90 days, unless your settings say otherwise). The SBOM and the VEX
+document of each release belong to its technical documentation, which you keep for at least ten years after the
+product is placed on the market, or for the support period if that is longer (CRA Article 13(13); the SBOM is Annex
+VII point 8). Shipward does not keep them for you. Put them with the release, for example as release assets:
+
+```yaml
+    permissions:
+      contents: write                     # to upload release assets
+    steps:
+      # ... checkout and the Shipward step, as above ...
+      - if: startsWith(github.ref, 'refs/tags/')
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: gh release upload "$GITHUB_REF_NAME" sbom/*.json --clobber
+```
+
+`sbom/*.json` uploads what is there: every SBOM, and the VEX document once `vex.yaml` has decisions (before that,
+there is none). These are the default paths; `sbom.output` and `vex.output` in `shipward.yaml` change them. The
+release must exist when this step runs (create it in an earlier step, or run the workflow on `release`).
+
 ## More than one delivered file
 
 `--artifact` takes one file, so make one SBOM per download. The output `shipward` is the path of the binary the Action
