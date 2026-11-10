@@ -78,7 +78,7 @@ So this job is a backstop, not your only reminder: keep the deadlines in your ow
 | `version` | tag name, else the commit | Product version in the SBOM |
 | `check` | `true` | List missing SBOM fields (never fails the job) |
 | `scan` | `true` | Scan for known vulnerabilities |
-| `fail-on` | `none` | `open` or `exploited` to fail the job |
+| `fail-on` | `none` | `open` or `exploited` to fail the job (`exploited` also fails when CISA's or ENISA's list could not be loaded) |
 | `export-vex` | `true` | Write the OpenVEX document when there are decisions |
 | `artifact`, `artifact-url` | | The delivered file and its download URL |
 | `upload`, `upload-name`, `upload-path` | `true`, `shipward`, `sbom` | The workflow artifact |
