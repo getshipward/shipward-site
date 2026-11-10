@@ -16,6 +16,7 @@ CI runner. It needs no account and uploads nothing.
 | `shipward licences` | Lists components without a confirmed licence |
 | `shipward scan` | Matches the SBOM against public vulnerability data, locally |
 | `shipward triage` | Records your decisions about advisories (VEX) and exports them as OpenVEX |
+| `shipward advisory` | A draft advisory about a fixed vulnerability, in Markdown and CSAF |
 | `shipward report` | Drafts of the Article 14 reports and their deadlines |
 
 Start with [Getting started](/docs/getting-started/).
