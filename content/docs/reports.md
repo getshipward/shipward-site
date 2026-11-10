@@ -27,6 +27,22 @@ shipward report fixed CASE              # a fix is available: the final report i
 shipward report drafts CASE --force     # write the drafts again after you changed report.yaml
 ```
 
+## Times and deadlines
+
+- A time is RFC 3339 (`2026-11-06T14:00:00+01:00`) or `2026-11-06 14:00` in your local time, on the command line
+  and in `report.yaml` alike. A date without a time is refused.
+- One month ends on the same day of the next month. When that day does not exist, it ends on the last day of the
+  month: a notification sent on 31 January gives 28 February (29 in a leap year). Shipward keeps the clock time of
+  the notification, so its date is never later than the legal one; the legal end of the period can be later (the end
+  of that day, or the next working day).
+- Until you record the notification of an incident, the final report shows "at the latest": one month after the
+  notification's 72-hour deadline. The date moves earlier when you record the notification.
+- `shipward report fixed CASE --at TIME` can be before you became aware: the flaw may be fixed in a newer release
+  already. When its 14 days end before the notification is due, Shipward asks for the final report together with the
+  notification.
+- `shipward report done` records the reports in order: early warning, notification, final report. If you sent two
+  together, record both with the same time. Times in the future, and times before you became aware, are refused.
+
 ## A case
 
 Each case is a folder in `cra/reports/`: `report.yaml` with the facts and the times, and four drafts:
@@ -48,5 +64,6 @@ reports:
 
 ## In CI
 
-`shipward report --fail-on overdue` exits with code 3 when a report is overdue. Run it on a schedule, so a missed deadline
+`shipward report --fail-on overdue` exits with code 3 when a report is overdue (`--fail-on none`, the default, never
+does). Run it on a schedule, so a missed deadline
 fails a job and you hear about it.
