@@ -77,17 +77,18 @@ component, and to share your fix with them if you made one (Article 13(6)). Reco
 ```
 
 `shipward triage set ... --upstream-reported DATE --upstream-link URL --upstream-fix-shared` writes it. A later
-`shipward triage set` on the same advisory and component keeps it. After an `affected` decision without `upstream`,
-`shipward triage set` reminds you, and `shipward triage` shows "upstream: not recorded". `shipward scan` shows what you
+`shipward triage set` on the same advisory and component keeps it, and each upstream flag changes only its own field.
+If the advisory came from the maintainer, they know already: there is nothing to report. After an `affected` decision
+without `upstream`, `shipward triage set` reminds you, and `shipward triage` shows "upstream: not recorded". `shipward scan` shows what you
 recorded next to the decision. The OpenVEX document does not carry it.
 
 ## The OpenVEX document
 
 `shipward triage export` names your product with an ID that stays the same for one release: the product's package URL
-from the SBOM when it has one, else `pkg:generic/<name>@<version>`. Each component is named by its package URL. A
+from the SBOM when it has one (with the product version added when it has none), else `pkg:generic/<name>@<version>`. Each component is named by its package URL. A
 decision for every version is written for the versions your product ships, with its date or time in UTC.
 
 Each release has one document, and its `@id` stays the same. When the document already exists, `shipward triage
 export` compares the decisions. Unchanged decisions give an unchanged file. Changed ones raise `version` by one and
 set `last_updated`. Keep the exported file (for example with the release) to keep the count: without it, the next
-export starts at version 1 again.
+export starts at version 1 again, and says so on stderr.
