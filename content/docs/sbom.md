@@ -14,7 +14,24 @@ shipward sbom --version 1.4.0 --artifact build/game.exe --artifact-url https://e
 shipward sbom -o -                 # print it
 ```
 
-With `--artifact`, the file you deliver gets its name and SHA-512 in the SBOM. `--form` says what that file is, for
+## A source SBOM
+
+`shipward sbom` makes a source SBOM: it lists what your lock files and manifests name before the build, not what the
+build put into the file you deliver. The SBOM says so in `metadata.lifecycles` (CycloneDX phase `pre-build`). A build
+can add things no lock file names, such as a runtime that a bundler copies in, or leave out packages a lock file
+lists. Compare the SBOM with your build output, and add what is missing to `components.extra.yaml` (below).
+
+Packages only for development or tests are not part of what you deliver:
+
+- npm's development dependencies (marked `dev` in the lock file) and Composer's `packages-dev` are left out;
+- other lock files mostly do not say which packages are only for development or tests (Go modules used only by
+  tests, Cargo's `dev-dependencies`, NuGet test projects), so these can appear. Leave test projects out with
+  `sbom.exclude` in `shipward.yaml`, for example `exclude: ["./tests/**"]`.
+
+## The delivered file
+
+With `--artifact`, the file you deliver gets its name and SHA-512 in the SBOM. The component list still comes from the
+lock files, so the SBOM stays a `pre-build` one. `--form` says what that file is, for
 the BSI fields: a list of `executable`, `bundle` (the file holds other files) and `structured`, or `none`. It overrides the product's settings in
 `shipward.yaml`, so each download of the same release can have its own SBOM:
 
