@@ -81,8 +81,9 @@ intermediate report. Add what you learn to `report.yaml` (measures taken,
 measures users can take, affected versions) and write the drafts again.
 
 > A case describes something that may not be public yet. Keep it out of public repositories. shipward writes the files so
-> that only you can read them, and `shipward report new` writes `cra/reports/.gitignore` with `*`, so git ignores the
-> cases. When git does not ignore a case and the repository has a remote, `shipward report new` warns you.
+> that only you can read them. When `shipward report new` creates the `cra/reports/` folder, it writes
+> `cra/reports/.gitignore` with `*`, so git ignores the cases. When git does not ignore a case and the repository has a
+> remote, `shipward report new` warns you.
 
 ## Settings
 
