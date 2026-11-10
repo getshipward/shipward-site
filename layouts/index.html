@@ -5,7 +5,7 @@
       <div class="hero-text">
         <p class="badge"><span class="dot" aria-hidden="true"></span>In use for our own products. Not available yet.</p>
         <h1>Get your software ready for the <span class="grad">Cyber Resilience Act</span>, in your own repository.</h1>
-        <p class="hero-lead">Shipward is a command-line tool and a GitHub Action for small software makers. It lists every component of your product, finds known vulnerabilities in them, and keeps your decisions about each one. Everything it makes stays in your repository.</p>
+        <p class="hero-lead">Shipward is a command-line tool and a GitHub Action for small software makers. It lists every component of your product, finds known vulnerabilities in its packages from eight ecosystems (npm, NuGet, Composer, Go, PyPI, Maven, Rust, RubyGems), and keeps your decisions about each one. Everything it makes stays in your repository.</p>
         <p class="hero-actions">
           <a class="button" href="{{ "/docs/" | relURL }}">Read the docs</a>
           <a class="button ghost" href="#how">How it works</a>
@@ -70,7 +70,7 @@ wrote sbom/vex.openvex.json (1 statement)</code></pre>
       <li>
         <p class="cmd">shipward scan</p>
         <h3>Known vulnerabilities</h3>
-        <p>Matches every component version against a daily, signed snapshot of public advisories, on your machine. Shows which ones are known to be exploited (CISA KEV, ENISA EUVD) and their EPSS score.</p>
+        <p>Matches each component version from npm, NuGet, Composer, Go, PyPI, Maven, Rust and RubyGems against a daily, signed snapshot of public advisories, on your machine. Says how many other components it could not check. Shows which advisories are known to be exploited (CISA KEV, ENISA EUVD) and their EPSS score.</p>
       </li>
       <li>
         <p class="cmd">shipward triage</p>
