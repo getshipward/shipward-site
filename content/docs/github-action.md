@@ -13,7 +13,7 @@ jobs:
       - run: dotnet restore --locked-mode       # .NET only: hashes and creators come from restored packages
       - uses: getshipward/shipward@<commit>     # pin a commit
         with:
-          fail-on: none                         # or open, exploited
+          fail-on: none                         # or open, exploited, unchecked
 ```
 
 The Action builds `shipward` from Shipward's source at the commit you pin, then runs `shipward sbom`, `shipward check sbom`,
