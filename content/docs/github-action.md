@@ -39,10 +39,12 @@ VII point 8). Shipward does not keep them for you. Put them with the release, fo
       # ... checkout and the Shipward step, as above ...
       - if: startsWith(github.ref, 'refs/tags/')
         env: { GH_TOKEN: "${{ github.token }}" }
-        run: gh release upload "$GITHUB_REF_NAME" sbom/sbom.cdx.json sbom/vex.openvex.json --clobber
+        run: gh release upload "$GITHUB_REF_NAME" sbom/*.json --clobber
 ```
 
-The release must exist when this step runs (create it in an earlier step, or run the workflow on `release`).
+`sbom/*.json` uploads what is there: every SBOM, and the VEX document once `vex.yaml` has decisions (before that,
+there is none). These are the default paths; `sbom.output` and `vex.output` in `shipward.yaml` change them. The
+release must exist when this step runs (create it in an earlier step, or run the workflow on `release`).
 
 ## More than one delivered file
 
