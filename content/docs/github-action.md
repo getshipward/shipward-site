@@ -1,7 +1,7 @@
 ---
 title: GitHub Action
 weight: 70
-lead: All of the above on every push, with the results in the job summary.
+lead: The SBOM, its field check, the vulnerability scan and the VEX export on every push, with the results in the job summary.
 ---
 
 ```yaml
@@ -17,7 +17,8 @@ jobs:
 ```
 
 The Action builds `shipward` from Shipward's source at the commit you pin, then runs `shipward sbom`, `shipward check sbom`,
-`shipward scan` and `shipward triage export`. The results:
+`shipward scan` and `shipward triage export`. It does not run `shipward init`, `shipward licences` or `shipward report`
+(the licences you confirmed in `licences.yaml` still go into the SBOM). The results:
 
 - the job summary: the SBOM fields table and the vulnerability table with your decisions;
 - the outputs `open` (advisories without a final decision) and `exploited` (of those, the ones known to be
@@ -38,6 +39,35 @@ built; later steps can run it:
           "$SHIPWARD" sbom --version 1.4.0 --artifact dist/game-setup.exe --form executable,bundle -o sbom/setup.cdx.json
           "$SHIPWARD" sbom --version 1.4.0 --artifact dist/game.zip --form bundle -o sbom/zip.cdx.json
 ```
+
+## Report deadlines
+
+The Action does not look at your [report cases](../reports/). To hear about a missed Article 14 deadline, run
+`shipward report --fail-on overdue` on a schedule. Run it only in a private repository that holds your cases: they
+describe vulnerabilities that may not be fixed or public yet.
+
+```yaml
+name: CRA report deadlines
+on:
+  schedule:
+    - cron: "17 * * * *"                      # every hour: the first deadline is 24 hours
+  workflow_dispatch:
+jobs:
+  deadlines:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@<commit>
+      - id: shipward
+        uses: getshipward/shipward@<commit>   # pin a commit
+        with: { check: "false", scan: "false", export-vex: "false", upload: "false" }
+      - env: { SHIPWARD: "${{ steps.shipward.outputs.shipward }}" }
+        run: '"$SHIPWARD" report --fail-on overdue'
+```
+
+The job fails (exit code 3) while a report is overdue. GitHub sends the failure to the person who last changed the
+schedule, if that person has Actions notifications turned on. GitHub can delay scheduled runs, and at times of high
+load it can drop some ([GitHub's docs on `schedule`](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)).
+So this job is a backstop, not your only reminder: keep the deadlines in your own calendar too.
 
 ## Inputs
 
