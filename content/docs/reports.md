@@ -8,6 +8,9 @@ Since 11 September 2026, a manufacturer reports an actively exploited vulnerabil
 incident that affects the product's security, through ENISA's single reporting platform to its CSIRT coordinator
 (CRA Article 14). The clock starts when you become aware of it.
 
+This also applies to products placed on the market before 11 December 2027 (Article 69(3)). The other CRA duties
+reach those products only after a substantial modification from that date (Article 69(2)).
+
 | Report | Due |
 |---|---|
 | Early warning | 24 hours after becoming aware |
