@@ -128,8 +128,10 @@ Tell the affected users, and where appropriate all users, about the vulnerabilit
 `users.md` is a draft of the notice. Where it fits, also give it in a structured, machine-readable form
 (Article 14(8)): `shipward report drafts CASE --csaf` writes it as a
 [CSAF 2.0](https://docs.oasis-open.org/csaf/csaf/v2.0/os/csaf-v2.0-os.html) document, `users.csaf.json`, from
-`report.yaml`. It needs `versions`, `user_measures` and `manufacturer.url`. It is a draft: check it before it goes
-out.
+`report.yaml`. It needs `versions`, `user_measures` and `manufacturer.url`. It takes nothing from `summary`,
+`severity` or `impact`: those are written for the CSIRT and may say how the flaw works. Its description is a TODO
+for you. It is the notice for the time before a fix. Once the update is out, publish an
+[advisory](../advisories/) (`shipward advisory new`). It is a draft: check it before it goes out.
 
 ## The drafts follow the form
 
