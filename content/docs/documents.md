@@ -26,8 +26,9 @@ Some drafts hold choices only you can make, so they stay TODO until you make the
 - `SECURITY.md` promises response times: when you confirm a report, when you say what happens next, and how long you
   ask a reporter to keep it private. Set them in `shipward.yaml` (below), or write them into the file.
 - `SECURITY.md` says which versions get security updates. Fill in the table, or say that only the latest version
-  gets them. You may do that only if the users of older versions can get the latest version free of charge, and need
-  no new hardware or software to use it (Article 13(10)).
+  gets them. Article 13(10) allows that for later, substantially modified versions, only if the users of the earlier
+  versions can get the latest version free of charge and have no additional costs to adjust their hardware and
+  software environment.
 - `security.txt` must have a `Contact` field (RFC 9116). Without `security.contact` or `manufacturer.email`, the field
   is a TODO and `shipward init` warns. The draft's `Expires` is 11 months from the day you run `shipward init`: write
   the file again before then.
