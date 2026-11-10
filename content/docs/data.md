@@ -33,14 +33,15 @@ left out, and so are records of malicious packages.
 
 | File | What |
 |---|---|
-| `v1/index.json` | The index: each file's SHA-256 and size, the sources and their licences, the time it was made, and an Ed25519 signature over all of it |
+| `v1/index.json` | The index: each file's SHA-256 and size, the sources and their licences, the time it was made and when it expires (7 days later), and an Ed25519 signature over all of it |
 | `v1/<run>/osv-<ecosystem>.json.gz` | The advisories of one ecosystem (npm, NuGet, Packagist, Go, PyPI, Maven, crates.io, RubyGems) |
 | `v1/<run>/exploited.json.gz` | CISA's catalog of known exploited vulnerabilities |
 
 Each run writes a new folder and replaces the index last, so a reader never sees an index that names missing files.
 
 `shipward` accepts an index only with a valid signature from a key built into it, then checks each file's SHA-256 against
-the index. The public key:
+the index. It never accepts an index older than the one it has cached, and it warns when the snapshot is more than 48
+hours old or has expired ([How old the data is](/docs/scan/#how-old-the-data-is)). The public key:
 
 ```text
 lEo2EB4n5NrYCg2b0HUxtz/GYEvW05AW9OOfrfncpYg=
