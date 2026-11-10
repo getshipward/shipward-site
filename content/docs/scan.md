@@ -38,7 +38,8 @@ Every scan shows the age of the snapshot and of the ENISA and EPSS copies, in th
 - the snapshot or a feed copy is more than 48 hours old (for example with `--offline`, which uses copies of any age);
 - the snapshot has expired: each one expires 7 days after it was made, so a server that keeps offering an old
   snapshot is noticed even on a CI runner that starts with an empty cache;
-- a feed could not be loaded. Then the scan says so, and lists only the sources it really used.
+- a feed could not be loaded, or came back empty (CISA's and ENISA's lists are never empty, so an empty one counts as
+  not loaded, and an older good copy is kept). Then the scan says so, and lists only the sources it really used.
 
 `--max-age` turns the age warning into a failure: `shipward scan --max-age 3d` exits 1 when the snapshot or a feed copy
 is older than 3 days. It takes hours (`36h`) or days (`3d`).
@@ -58,6 +59,8 @@ in your product (CRA Art. 3(42), 14(1)). If it is, the 24-hour early warning may
 ```
 
 `shipward triage set ... --status affected` prints the same when the cached snapshot lists the advisory as exploited.
+When it cannot tell (no cached snapshot, no such advisory for that component, or CISA's or ENISA's list missing), it
+says so and gives the same guidance.
 The 24 hours run from when you became aware (see [Reports](/docs/reports/)).
 
 These lists only cover public advisories. Exploitation of your own code never shows in them: if you learn of it from a
