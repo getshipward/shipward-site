@@ -33,11 +33,13 @@ Some drafts hold choices only you can make, so they stay TODO until you make the
 - `security.txt` must have a `Contact` field (RFC 9116). Without `security.contact` or `manufacturer.email`, the field
   is a TODO and `shipward init` warns. The draft's `Expires` is 11 months from the day you run `shipward init`: write
   the file again before then.
-- The support period: `shipward init` refuses a `support_until` month that is over. It warns when the support period
+- The support period: `shipward init` refuses a `support_until` month that is over, for the drafts that state it
+  (`security.txt` can still be written again). It warns when the support period
   ends less than five years after `placed_on_market` (or after today, when that is not set): Article 13(8) asks for at
   least five years, unless the product is expected to be in use for less time. The drafts also hold TODOs for showing
-  the end date at the time of purchase (Article 13(19)) and for keeping each security update available for at least
-  ten years (Article 13(9)).
+  the end date at the time of purchase and for the notification the product displays when support has ended, where
+  technically feasible (Article 13(19)), and for keeping each security update available for at least ten years
+  (Article 13(9)).
 
 > These are drafts that help you prepare. They are not legal advice and do not show conformity. Every file starts
 > with a short note saying so; remove it once you have filled in the TODOs and checked every sentence. Sign the
