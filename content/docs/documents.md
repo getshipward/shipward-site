@@ -20,7 +20,7 @@ each file has. It never overwrites a file unless you add `--force`.
 | `cra/user-information.md` | The information users must get: manufacturer, contact for vulnerabilities, intended purpose, support period, instructions | CRA Annex II |
 | `cra/declaration-of-conformity.md` | The EU declaration of conformity, unsigned | CRA Annex V |
 | `cra/simplified-declaration-of-conformity.md` | The short form you may give with the product instead: two fixed sentences and the address of the full declaration | CRA Annex VI |
-| `cra/technical-documentation.md` | The outline of the technical documentation, with a table for each essential requirement | CRA Annex VII and Annex I, part I |
+| `cra/technical-documentation.md` | The outline of the technical documentation, with the risk assessment: its context, a table for each requirement of Annex I, Part I (with a column for why one does not apply) and one for each vulnerability handling requirement of Part II, with the files Shipward makes, where it makes one | CRA Annex VII, Annex I, Article 13(3) and (4) |
 
 Some drafts hold choices only you can make, so they stay TODO until you make them:
 
