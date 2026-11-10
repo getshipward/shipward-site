@@ -30,7 +30,8 @@ Packages only for development or tests are not part of what you deliver:
 
 ## The delivered file
 
-With `--artifact`, the file you deliver gets its name and SHA-512 in the SBOM. `--form` says what that file is, for
+With `--artifact`, the file you deliver gets its name and SHA-512 in the SBOM. The component list still comes from the
+lock files, so the SBOM stays a `pre-build` one. `--form` says what that file is, for
 the BSI fields: a list of `executable`, `bundle` (the file holds other files) and `structured`, or `none`. It overrides the product's settings in
 `shipward.yaml`, so each download of the same release can have its own SBOM:
 
