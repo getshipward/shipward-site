@@ -64,8 +64,10 @@ jobs:
         run: '"$SHIPWARD" report --fail-on overdue'
 ```
 
-The job fails (exit code 3) while a report is overdue. GitHub tells the person who last changed the schedule when a
-scheduled run fails. A scheduled run can start some minutes late.
+The job fails (exit code 3) while a report is overdue. GitHub sends the failure to the person who last changed the
+schedule, if that person has Actions notifications turned on. GitHub can delay scheduled runs, and at times of high
+load it can drop some ([GitHub's docs on `schedule`](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)).
+So this job is a backstop, not your only reminder: keep the deadlines in your own calendar too.
 
 ## Inputs
 
