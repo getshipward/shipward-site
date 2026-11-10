@@ -59,7 +59,7 @@ Free and open-source software in Annex III may use internal control if its techn
 The declaration's point 3 says "manufacturer", where Annex V says "provider": the manufacturer draws up the
 declaration and takes responsibility for it (Articles 13(12) and 28). Make the declaration available in the languages
 required by each Member State where the product is placed on the market or made available, also when you supply it
-free of charge in the course of a commercial activity (Article 28(2), Article 3).
+free of charge in the course of a commercial activity (Article 28(2), Article 3(22)).
 
 For software, the CE marking goes on the declaration of conformity or on the product's website, and only once the
 conformity assessment shows that the requirements are met (Articles 13(12) and 30). Set `product.declaration_url` to
