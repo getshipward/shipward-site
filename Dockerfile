@@ -8,13 +8,13 @@
 # with the go line in server/go.mod.
 
 # 1. The site, with scripts/build.sh: it downloads the Hugo release named in .hugo-version and checks its checksum.
-FROM golang:1.27.3-trixie@sha256:c124b9ad3452f46061b5054607d26ea51730dae5372c5e469920063ba2bc6dcc AS site
+FROM golang:1.27.4-trixie@sha256:b54b2639de8c1bfe538ec5ffc45f29b1932235ac5f6d63c059853646677112d9 AS site
 WORKDIR /src
 COPY . .
 RUN scripts/build.sh && test -f public/index.html
 
 # 2. The server.
-FROM golang:1.27.3-trixie@sha256:c124b9ad3452f46061b5054607d26ea51730dae5372c5e469920063ba2bc6dcc AS server
+FROM golang:1.27.4-trixie@sha256:b54b2639de8c1bfe538ec5ffc45f29b1932235ac5f6d63c059853646677112d9 AS server
 WORKDIR /src
 ENV CGO_ENABLED=0 GOTOOLCHAIN=local
 COPY server/go.mod ./
