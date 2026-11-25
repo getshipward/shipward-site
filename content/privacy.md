@@ -40,4 +40,4 @@ network, which sees your address in order to deliver the files.
 
 Questions: [daniel@sori-resitve.si](mailto:daniel@sori-resitve.si).
 
-Controller: Šori rešitve, Daniel Arthur Hawton, s.p., Slovenska cesta 56, 1000 Ljubljana, Slovenia.
+Controller: Šori rešitve, Daniel Arthur Sori, s.p., Slovenska cesta 56, 1000 Ljubljana, Slovenia.

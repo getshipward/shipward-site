@@ -25,7 +25,7 @@ enableRobotsTXT = true
   description = "Shipward helps small software makers prepare for the EU Cyber Resilience Act: SBOMs, a local vulnerability scan and VEX decisions, in your own repository."
   contact = "daniel@sori-resitve.si"
   [params.company]
-    legalName = "Šori rešitve, Daniel Arthur Hawton, s.p."
+    legalName = "Šori rešitve, Daniel Arthur Sori, s.p."
     address = "Slovenska cesta 56"
     postalCode = "1000"
     city = "Ljubljana"
