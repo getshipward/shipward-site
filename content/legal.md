@@ -4,7 +4,7 @@ title: Legal notice
 
 Shipward is a product of:
 
-**Šori rešitve, Daniel Arthur Hawton, s.p.**
+**Šori rešitve, Daniel Arthur Sori, s.p.**
 Slovenska cesta 56, 1000 Ljubljana, Slovenia
 Tax number: 28722795
 Registration number: 7543727000
